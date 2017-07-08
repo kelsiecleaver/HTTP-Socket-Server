@@ -19,41 +19,55 @@ const server = net.createServer( (request) => {
       case '/':
       case '/index':
       case '/index.html':
-        writeHeader(request, '200 OK', 'text/html', indexHTML);
+        showHeader(request, '200 OK', 'text/html', index);
         request.end();
         break;
 
         case '/404':
         case '/404.html':
-        writeHeader(request, '200 OK', 'text/html', 404);
+        showHeader(request, '200 OK', 'text/html', error404);
         request.end();
         break;
 
         case 'helium':
         case '/helium.html':
-        writeHeader(request, '200 OK', 'text/html', heliumHTML);
+        showHeader(request, '200 OK', 'text/html', helium);
         request.end();
         break;
 
         case 'hydrogen':
         case '/hydrogen.html':
-        writeHeader(request, '200 OK', 'text/html', hydrogenHTML);
+        showHeader(request, '200 OK', 'text/html', hydrogen);
         request.end();
         break;
 
         case 'cssStyles':
-        case '/sytles.css':
-        writeHeader(request, '200 OK', 'text/css',
-          cssStylesHTML);
+        case '/css/styles.css':
+        showHeader(request, '200 OK', 'text/css',
+          cssStyles);
         request.end();
         break;
     }
   });
 });
 
+const showHeader = (request, status, fileType, fileName) => {
+  request.write(`HTTP/1.1 ${status}
+Server: Kelsie's Server
+Date: ${new Date().toUTCString()};
+Content-Type: ${fileType}; charset=utf-8
+Content-Length: ${fileName.length}
+Connection: keep-alive
+
+${fileName}`);
+};
+
 server.listen(8080, () => {
   console.log('opened server on address');
 });
+
+//hello/
+
 
 
 
