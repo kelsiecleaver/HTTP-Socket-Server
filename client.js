@@ -1,13 +1,24 @@
 /*jshint esversion: 6 */
 
 const net = require('net');
-const client = net.connect(8080, () => {
-  console.log('connected to server');
-  client.on('data', (chunk) =>{
-    console.log(chunk.toString());
 
-  });
-  process.stdin.on('data', (chunk) => {
-    client.write(chunk);
-  });
+const port = 80;
+const host = process.argv[2];
+
+const client = net.createConnection(port, host, () => {
+  console.log('connected to server');
 });
+
+client.write(`GET / HTTP/1.1
+Date: ${new Date().toUTCString()}
+Host: ${host}
+User-Agent: Kelsie
+Connection: close\r\n\r\n`);
+
+  client.on('data', (chunk)=> {
+    console.log(chunk.toString().split());
+    client.end();
+   });
+
+
+
